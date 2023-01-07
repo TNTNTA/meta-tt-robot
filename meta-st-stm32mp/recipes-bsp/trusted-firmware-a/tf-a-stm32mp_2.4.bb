@@ -16,6 +16,7 @@ SRC_URI += " \
     file://0001-st-update-v2.4-r1.0.0.patch \
     file://0002-v2.4-stm32mp-r1.1-rc1.patch \
     file://0003-v2.4-stm32mp-r2.patch \
+    file://0004-add-stm32mp157d-robot-dts-config.patch \
     "
 
 TF_A_VERSION = "v2.4"
