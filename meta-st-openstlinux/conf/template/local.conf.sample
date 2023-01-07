@@ -50,7 +50,7 @@ DISTRO ??= "nodistro"
 #
 # The default is a downloads directory under TOPDIR which is the build directory.
 #
-#DL_DIR ?= "${TOPDIR}/downloads"
+DL_DIR ?= "${TOPDIR}/../downloads"
 
 #
 # Where to place shared-state files
@@ -65,6 +65,7 @@ DISTRO ??= "nodistro"
 # be used (done using checksums).
 #
 # The default is a sstate-cache directory under TOPDIR.
+
 #
 #SSTATE_DIR ?= "${TOPDIR}/sstate-cache"
 

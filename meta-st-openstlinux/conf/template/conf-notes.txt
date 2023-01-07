@@ -6,4 +6,6 @@ Available images for OpenSTLinux layers are:
   - Other OpenSTLinux images:
       - Supported images:
           st-image-core         -   OpenSTLinux core image
+          st-example-image-qt   -   qt example image
+
 

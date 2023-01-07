@@ -15,7 +15,8 @@ _SUPPORTED_UBUNTU_RELEASE="16.04 18.04 20.04"
 # Set default layer root
 #
 if [ -z "$META_LAYER_ROOT" ]; then
-    _META_LAYER_ROOT=layers/meta-st
+    #_META_LAYER_ROOT=layers/meta-st
+    _META_LAYER_ROOT=layers/meta-tt-robot
 else
     _META_LAYER_ROOT=$META_LAYER_ROOT
 fi
@@ -121,7 +122,7 @@ _stoe_help_extra() {
     echo "        $> SDKMACHINE=i586 source ${BASH_SOURCE#$PWD/}"
     echo ""
     echo "  Define BSP_DEPENDENCY:"
-    echo "      For specific machine, outside of meta-st layers, we may need to append"
+    echo "      For specific machine, outside of meta-tt-robot layers, we may need to append"
     echo "      specific layers to bblayers.conf file when sourcing environement setup file"
     echo "      A specific var is available to provide the list of layer path (starting from"
     echo "      baseline root): BSP_DEPENDENCY"
@@ -129,7 +130,7 @@ _stoe_help_extra() {
     echo "        $> BSP_DEPENDENCY='<layer_path1> <layer_path2>' source ${BASH_SOURCE#$PWD/}"
     echo ""
     echo "  Configure META_LAYER_ROOT:"
-    echo "      By default the script run using meta-st as default layer root, but this can"
+    echo "      By default the script run using meta-tt-robot as default layer root, but this can"
     echo "      be changed if you set META_LAYER_ROOT (starting from baseline root)"
     echo "      Example:"
     echo "        $> META_LAYER_ROOT=openembedded-core source ${BASH_SOURCE#$PWD/}"
