@@ -256,7 +256,7 @@ INHERIT += "buildhistory"
 BUILDHISTORY_COMMIT = "1"
 
 # Clean up working directory after build
-INHERIT += "rm_work"
+#INHERIT += "rm_work"
 
 # To generate debug image with all symbol
 #IMAGE_GEN_DEBUGFS = "1"
