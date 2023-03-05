@@ -7,6 +7,7 @@ LICENSE = "GPLv2+"
 PROVIDES += "u-boot"
 RPROVIDES_${PN} += "u-boot"
 
+UBOOT_DEVICETREE = "stm32mp157d-robot"
 # ---------------------------------
 # Configure archiver use
 # ---------------------------------

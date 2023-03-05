@@ -222,13 +222,15 @@ do_deploy_append() {
                                 install -d ${DEPLOYDIR}${SUBFOLDER}
                                 [ -n "${ELF_DEBUG_ENABLE}" ] && install -d ${DEPLOYDIR}${SUBFOLDER}/debug
                                 # Get short suffix for current type
+
                                 type_suffix=$(echo ${type} | cut -d'_' -f1)
                                 type_filter=$(echo ${type} | cut -d'_' -f2)
+                                bbwarn "TT type_suffix: ${type_suffix}  type_filter:${type_filter}"
                                 [ "${type_suffix}" = "${type_filter}" ] && type_filter=""
                                 for devicetree in ${UBOOT_DEVICETREE}; do
                                     if [ -n "${type_filter}" ]; then
                                         if [ "$(echo ${devicetree} | grep -c ${type_filter})" -eq 1 ]; then
-                                            bbnote "The ${type_filter} filter for ${type_suffix} config matches ${devicetree} device tree. Go for binary deploy..."
+                                            bbwarn "The ${type_filter} filter for ${type_suffix} config matches ${devicetree} device tree. Go for binary deploy..."
                                         else
                                             bbnote "The ${type_filter} filter for ${type_suffix} config doesn't match ${devicetree} device tree. Skip binary deploy!"
                                             continue
