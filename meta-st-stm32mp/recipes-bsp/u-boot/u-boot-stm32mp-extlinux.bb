@@ -29,7 +29,7 @@ do_compile() {
         # and use also default subdir name for u-boot (i.e. 'extlinux')
         if [ "$(echo ${STM32MP_DEVICETREE} | wc -w)" -eq 1 ] ; then
             dvtree=$(echo ${STM32MP_DEVICETREE})
-            bbnote "Only one devicetree defined: ${dvtree}"
+            bbwarn "Only one devicetree defined: ${dvtree}"
             if [ -f ${subdir}/${dvtree}_extlinux.conf ]; then
                 bbnote "Moving ${dvtree}_extlinux.conf to extlinux.conf file"
                 mv -f ${subdir}/${dvtree}_extlinux.conf ${subdir}/extlinux.conf
