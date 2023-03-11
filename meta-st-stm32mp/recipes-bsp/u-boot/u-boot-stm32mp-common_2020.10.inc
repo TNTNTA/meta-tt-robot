@@ -26,7 +26,7 @@ SRC_URI = "git://github.com/u-boot/u-boot.git;protocol=https \
            file://0099-Add-external-var-to-allow-build-of-new-devicetree-fi.patch \
            ${@bb.utils.contains('ST_UBOOT_DEBUG_TRACE', '1', '', 'file://0098-silent_mode.patch', d)} \
            file://0001-NEW-uboot-support-tt-robot-dtb.patch \
-           file://0002-TT-modify-uboot-config-support-lcd-display.patch \
+           file://0002-TT-modify-uboot-config.patch \
            "
 SRCREV  = "050acee119b3757fee3bd128f55d720fdd9bb890"
 
