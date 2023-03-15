@@ -15,14 +15,14 @@ INITRD_IMAGE_ALL += "${INITRD_IMAGE}"
 
 do_install() {
     if [ -z "${INITRD_IMAGE_ALL}" ]; then
-        bbnote "No InitRD file set"
+        bbwarn "No InitRD file set"
         return
     fi
 
     for img in ${INITRD_IMAGE_ALL}; do
         INITRD_IMAGE_FILE=$(find ${DEPLOY_DIR_IMAGE} -name ${img}*-${MACHINE}.${INITRAMFS_FSTYPES})
         if [ -e "${INITRD_IMAGE_FILE}" ]; then
-            bbnote "Copying ${img} InitRD file into ./boot/ ..."
+            bbwarn "Copying ${img} InitRD file into ./boot/ ..."
             install -d ${D}/boot
             install -m 0644 ${INITRD_IMAGE_FILE} ${D}/boot/${img}
         else

@@ -3,11 +3,13 @@
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
 resize_enabled() {
+     echo "TTTTT  resize_enabled ........... "
     return 0
 }
 
 resize_run() {
     ln -s /proc/mounts /etc/mtab
+    echo "TTTTT  resize_run   ..................... "
 
     if [ -n "$ROOTFS_DIR" ]; then
         if [ ! -e $ROOTFS_DIR/etc/.resized ]
