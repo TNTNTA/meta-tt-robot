@@ -1,0 +1,54 @@
+From b678c4d8f0e113d015b26ef2b4fc7a03c8badde2 Mon Sep 17 00:00:00 2001
+From: Tao Tang <15642339119@163.com>
+Date: Fri, 17 Mar 2023 23:17:59 +0800
+Subject: [PATCH] add uboot display debug
+
+Signed-off-by: Tao Tang <15642339119@163.com>
+---
+ drivers/video/simple_panel.c     | 3 ++-
+ drivers/video/stm32/stm32_ltdc.c | 3 ++-
+ drivers/video/video-uclass.c     | 3 ++-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/video/simple_panel.c b/drivers/video/simple_panel.c
+index 6c624c3769..07932ae7a0 100644
+--- a/drivers/video/simple_panel.c
++++ b/drivers/video/simple_panel.c
+@@ -3,7 +3,8 @@
+  * Copyright (c) 2016 Google, Inc
+  * Written by Simon Glass <sjg@chromium.org>
+  */
+-
++#define LOG_DEBUG
++#define DEBUG 
+ #include <common.h>
+ #include <backlight.h>
+ #include <dm.h>
+diff --git a/drivers/video/stm32/stm32_ltdc.c b/drivers/video/stm32/stm32_ltdc.c
+index fe36c6d87a..cbe4b11377 100644
+--- a/drivers/video/stm32/stm32_ltdc.c
++++ b/drivers/video/stm32/stm32_ltdc.c
+@@ -4,7 +4,8 @@
+  * Author(s): Philippe Cornu <philippe.cornu@st.com> for STMicroelectronics.
+  *	      Yannick Fertre <yannick.fertre@st.com> for STMicroelectronics.
+  */
+-
++#define DEBUG
++#define LOG_DEBUG
+ #include <common.h>
+ #include <clk.h>
+ #include <display.h>
+diff --git a/drivers/video/video-uclass.c b/drivers/video/video-uclass.c
+index 2939e5d0a0..7129758ffd 100644
+--- a/drivers/video/video-uclass.c
++++ b/drivers/video/video-uclass.c
+@@ -2,7 +2,8 @@
+ /*
+  * Copyright (c) 2015 Google, Inc
+  */
+-
++#define LOG_DEBUG
++#define DEBUG 
+ #include <common.h>
+ #include <console.h>
+ #include <cpu_func.h>

@@ -1,0 +1,139 @@
+From 822c7a4b4985a2cc877e1d130288f6fe3bebeccd Mon Sep 17 00:00:00 2001
+From: Tao Tang <15642339119@163.com>
+Date: Thu, 6 Apr 2023 00:29:27 +0800
+Subject: [PATCH] kernel support lcd display abd boot logo
+
+Signed-off-by: Tao Tang <15642339119@163.com>
+---
+ arch/arm/boot/dts/stm32mp157d-robot.dts  | 35 +++++++++++++++++++++---
+ arch/arm/boot/dts/stm32mp157d-robot.dtsi | 16 ++++-------
+ drivers/gpu/drm/panel/panel-simple.c     | 23 ++++++++++++++++
+ 3 files changed, 60 insertions(+), 14 deletions(-)
+
+diff --git a/arch/arm/boot/dts/stm32mp157d-robot.dts b/arch/arm/boot/dts/stm32mp157d-robot.dts
+index 7e62911ec..27f117772 100644
+--- a/arch/arm/boot/dts/stm32mp157d-robot.dts
++++ b/arch/arm/boot/dts/stm32mp157d-robot.dts
+@@ -25,9 +25,36 @@ gpu_reserved: gpu@f6000000 {
+ 			no-map;
+ 		};
+ 	};
+-};
+ 
+-&gpu {
+-	contiguous-area = <&gpu_reserved>;
+-	status = "okay";
++	panel_backlight: panel-backlight {
++		compatible = "pwm-backlight";
++		//pwms = <&pwm4 1 5000000>;
++		//brightness-levels = <0 4 8 16 32 64 128 255>;
++		power-supply = <&v3v3>;
++		//default-brightness-level = <7>;
++		status = "okay";
++	};
++
++    	panel_rgb: panel-rgb {
++		compatible = "robot,lcd-rgb";
++		backlight = <&panel_backlight>;
++		status = "okay";
++		port {
++			dsi_panel_in: endpoint {
++				remote-endpoint = <&ltdc_ep1_out>;
++			};
++		};
++	};
+ };
++
++&ltdc {
++    port {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        ltdc_ep1_out: endpoint@1 {
++            reg = <1>;
++            remote-endpoint = <&dsi_panel_in>;
++        };
++    };
++};
+\ No newline at end of file
+diff --git a/arch/arm/boot/dts/stm32mp157d-robot.dtsi b/arch/arm/boot/dts/stm32mp157d-robot.dtsi
+index a01836c01..2c36bf861 100644
+--- a/arch/arm/boot/dts/stm32mp157d-robot.dtsi
++++ b/arch/arm/boot/dts/stm32mp157d-robot.dtsi
+@@ -148,7 +148,7 @@ vin: regulator-vin {
+ 		regulator-max-microvolt = <5000000>;
+ 		regulator-always-on;
+ 		regulator-boot-on;
+-   	 };
++   	};
+ };
+ 
+ &cpu0{
+@@ -257,15 +257,6 @@ dma_pool: dma_pool@0 {
+ 	};
+ };
+ 
+-&timers6 {
+-	status = "okay";
+-	/* spare dmas for other usage */
+-	/delete-property/dmas;
+-	/delete-property/dma-names;
+-	timer@5 {
+-		status = "okay";
+-	};
+-};
+ 
+ &uart4 {
+ 	pinctrl-names = "default", "sleep", "idle";
+@@ -306,4 +297,9 @@ phy0: ethernet-phy@0 {
+ 			reg = <0>;
+ 		};
+ 	};
++};
++
++&gpu {
++	contiguous-area = <&gpu_reserved>;
++	status = "okay";
+ };
+\ No newline at end of file
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index 204674fcc..68ea1ede7 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -3900,6 +3900,26 @@ static const struct panel_desc arm_rtsm = {
+ 	.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
+ };
+ 
++static const struct drm_display_mode robot_4x3_800x480_mode = {
++       .clock = 33300,
++       .hdisplay = 800,
++       .hsync_start = 800 + 88,
++       .hsync_end = 800 + 88 + 48,
++       .htotal = 800 + 88 + 48 + 40,
++       .vdisplay = 480,
++       .vsync_start = 480 + 32,
++       .vsync_end = 480 + 32 + 3,
++       .vtotal = 480 + 32 + 3 + 13,
++       //.vrefresh = 60,
++       .flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC,
++};
++
++static const struct panel_desc robot_desc = {
++       .modes = &robot_4x3_800x480_mode,
++       .num_modes = 1,
++       .bus_format = MEDIA_BUS_FMT_RGB888_1X24,
++};
++
+ static const struct of_device_id platform_of_match[] = {
+ 	{
+ 		.compatible = "ampire,am-1280800n3tzqw-t00h",
+@@ -4300,6 +4320,9 @@ static const struct of_device_id platform_of_match[] = {
+ 	}, {
+ 		.compatible = "winstar,wf35ltiacd",
+ 		.data = &winstar_wf35ltiacd,
++	}, {
++		.compatible = "robot,lcd-rgb",
++		.data = &robot_desc,
+ 	}, {
+ 		/* Must be the last entry */
+ 		.compatible = "panel-dpi",

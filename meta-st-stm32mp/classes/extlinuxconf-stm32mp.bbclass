@@ -102,8 +102,8 @@ def create_extlinux_file(cfile, labels, data):
             splashscreen_name = localdata.getVar('UBOOT_EXTLINUX_SPLASH')
             if not splashscreen_name:
                 bb.warn('UBOOT_EXTLINUX_SPLASH not defined')
-            else:
-                cfgfile.write('MENU BACKGROUND /%s.bmp\n' % (splashscreen_name))
+            # else:
+            #     cfgfile.write('MENU BACKGROUND /%s.bmp\n' % (splashscreen_name))
 
             timeout =  localdata.getVar('UBOOT_EXTLINUX_TIMEOUT')
             if timeout:

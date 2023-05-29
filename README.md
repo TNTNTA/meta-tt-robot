@@ -19,11 +19,15 @@ libssl-dev libgmp-dev libmpc-dev
 3. 下载ST 官方openSTLinux layer源码
 ```
 // STM32MP15-Ecosystem-v3.1.0 release
-repo init -u https://github.com/STMicroelectronics/oe-manifest.git -b refs/tags/openstlinux-5.10-dunfell-mp1-21-11-17
+repo init -u https://github.com/STMicroelectronics/oe-manifest.git  \
+        -b refs/tags/openstlinux-5.10-dunfell-mp1-21-11-17
+repo sync
 
 ```
 4. 下载本仓库，添加到layers中
 ```
+git clone https://github.com/TNTNTA/meta-tt-robot.git
+拷贝meta-tt-robot到上面下载的layers下面：
 ➜  layers ls
 meta-openembedded  meta-qt5  meta-st  meta-tt-robot  openembedded-core
 ```
@@ -52,6 +56,12 @@ devtool build u-boot-stm32mp
 git add .
 git commit -s
 devtool update-recipe u-boot-stm32mp
+```
+4. kernel配置和更改
+```
+bitbake linux-stm32mp -c menuconfig
+bitbake linux-stm32mp -c diffconfig
+
 ```
 ## 烧录
 

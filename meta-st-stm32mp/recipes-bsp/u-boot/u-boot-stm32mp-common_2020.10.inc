@@ -27,6 +27,7 @@ SRC_URI = "git://github.com/u-boot/u-boot.git;protocol=https \
            ${@bb.utils.contains('ST_UBOOT_DEBUG_TRACE', '1', '', 'file://0098-silent_mode.patch', d)} \
            file://0001-NEW-uboot-support-tt-robot-dtb.patch \
            file://0002-TT-modify-uboot-config.patch \
+           file://0003-add-uboot-display-debug.patch \
            "
 SRCREV  = "050acee119b3757fee3bd128f55d720fdd9bb890"
 
