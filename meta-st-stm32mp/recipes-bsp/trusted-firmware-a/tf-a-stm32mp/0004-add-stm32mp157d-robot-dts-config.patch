@@ -1,18 +1,19 @@
-From b9597cf09d07a683bb71c010c1dd3584283fd463 Mon Sep 17 00:00:00 2001
+From b3573a86dbfc1633e68c009842359456ab55238e Mon Sep 17 00:00:00 2001
 From: Tao Tang <15642339119@163.com>
 Date: Sun, 8 Jan 2023 01:17:33 +0800
 Subject: [PATCH] add-stm32mp157d-robot-dts-config
 
 ---
- fdts/stm32mp157d-robot.dts  |  39 +++
- fdts/stm32mp157d-robot.dtsi | 513 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 552 insertions(+)
+ fdts/stm32mp157d-robot.dts      |  39 ++++
+ fdts/stm32mp157d-robot.dtsi     | 375 ++++++++++++++++++++++++++++++++
+ plat/st/stm32mp1/stm32mp1_def.h |   2 +-
+ 3 files changed, 415 insertions(+), 1 deletion(-)
  create mode 100644 fdts/stm32mp157d-robot.dts
  create mode 100644 fdts/stm32mp157d-robot.dtsi
 
 diff --git a/fdts/stm32mp157d-robot.dts b/fdts/stm32mp157d-robot.dts
 new file mode 100644
-index 0000000..4683180
+index 000000000..a2fda6136
 --- /dev/null
 +++ b/fdts/stm32mp157d-robot.dts
 @@ -0,0 +1,39 @@
@@ -31,8 +32,8 @@ index 0000000..4683180
 +#include <dt-bindings/soc/st,stm32-etzpc.h>
 +
 +/ {
-+	model = "STMicroelectronics STM32MP157D eval daughter";
-+	compatible = "st,stm32mp157d-ed1", "st,stm32mp157";
++	model = "STMicroelectronics STM32MP157D TT Robot";
++	compatible = "st,stm32mp157d-robot", "st,stm32mp157";
 +
 +	chosen {
 +		stdout-path = "serial0:115200n8";
@@ -57,10 +58,10 @@ index 0000000..4683180
 +};
 diff --git a/fdts/stm32mp157d-robot.dtsi b/fdts/stm32mp157d-robot.dtsi
 new file mode 100644
-index 0000000..0a15485
+index 000000000..0c22803f8
 --- /dev/null
 +++ b/fdts/stm32mp157d-robot.dtsi
-@@ -0,0 +1,513 @@
+@@ -0,0 +1,375 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
 +/*
 + * Copyright (C) STMicroelectronics 2017 - All Rights Reserved
@@ -81,131 +82,132 @@ index 0000000..0a15485
 +		serial0 = &uart4;
 +	};
 +
-+   vddcore: regulator-vddcore {
-+        compatible = "regulator-fixed";
-+        regulator-name = "vddcore";
-+        regulator-min-microvolt = <1200000>;
-+        regulator-max-microvolt = <1350000>;
-+        regulator-off-in-suspend;
-+        regulator-always-on;
-+    };
++	vddcore: regulator-vddcore {
++		compatible = "regulator-fixed";
++		regulator-name = "vddcore";
++		regulator-min-microvolt = <1200000>;
++		regulator-max-microvolt = <1200000>;
++		regulator-off-in-suspend;
++		regulator-always-on;
++	};
 +
-+    vdd_ddr: regulator-vdd-ddr {
-+        compatible = "regulator-fixed";
-+        regulator-name = "vdd_ddr";
-+        regulator-min-microvolt = <1350000>;
-+        regulator-max-microvolt = <1350000>;
-+        regulator-off-in-suspend;
-+        regulator-always-on;
-+    };
-+ 
-+    vdda: regulator-vvdda {
-+        compatible = "regulator-fixed";
-+        regulator-name = "vdda";
-+        regulator-min-microvolt = <2900000>;
-+        regulator-max-microvolt = <2900000>;
-+        regulator-off-in-suspend;
-+        regulator-always-on;
-+    };
-+ 
-+    vtt_ddr: regulator-vtt-ddr {
-+        compatible = "regulator-fixed";
-+        regulator-name = "vtt_ddr";
-+        regulator-min-microvolt = <500000>;
-+        regulator-max-microvolt = <750000>;
-+        regulator-off-in-suspend;
-+        regulator-always-on;
-+    };
-+ 
-+    v3v3: regulator-3p3v {
-+        compatible = "regulator-fixed";
-+        regulator-name = "v3v3";
-+        regulator-min-microvolt = <3300000>;
-+        regulator-max-microvolt = <3300000>;
-+        regulator-off-in-suspend;
-+        regulator-always-on;
-+    };
-+ 
-+     v1v8: regulator-v1v8 {
-+        compatible = "regulator-fixed";
-+        regulator-name = "v1v8";
-+        regulator-min-microvolt = <1800000>;
-+        regulator-max-microvolt = <1800000>;
-+        regulator-off-in-suspend;
-+        regulator-always-on;
-+    };
++	vdd_ddr: regulator-vdd-ddr {
++		compatible = "regulator-fixed";
++		regulator-name = "vdd_ddr";
++		regulator-min-microvolt = <1350000>;
++		regulator-max-microvolt = <1350000>;
++		regulator-off-in-suspend;
++		regulator-always-on;
++	};
 +
-+     vdd_sd: regulator-sd {
-+        compatible = "regulator-fixed";
-+        regulator-name = "vdd_sd";
-+        regulator-min-microvolt = <2900000>;
-+        regulator-max-microvolt = <2900000>;
-+        regulator-off-in-suspend;
-+        regulator-always-on;
-+    };
++ 	vdd: regulator-vdd {
++		compatible = "regulator-fixed";
++		regulator-name = "vdd";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		regulator-off-in-suspend;
++		regulator-always-on;
++	};
 +
-+     vref_ddr: vref_ddr {
-+        compatible = "regulator-fixed";
-+        regulator-name = "vref_ddr";
-+        regulator-min-microvolt = <3300000>;
-+        regulator-max-microvolt = <3300000>;
-+        regulator-off-in-suspend;
-+        regulator-always-on;
-+    };
++	v3v3: regulator-3p3v {
++		compatible = "regulator-fixed";
++		regulator-name = "v3v3";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		regulator-off-in-suspend;
++		regulator-always-on;
++	};
 +
-+    v1v8_audio: regulator-v1v8-audio {
-+        compatible = "regulator-fixed";
-+        regulator-name = "v1v8_audio";
-+        regulator-min-microvolt = <1800000>;
-+        regulator-max-microvolt = <1800000>;
-+        regulator-off-in-suspend;
-+        regulator-always-on;
-+    };
++	vdda: regulator-vvdda {
++		compatible = "regulator-fixed";
++		regulator-name = "vdda";
++		regulator-min-microvolt = <2900000>;
++		regulator-max-microvolt = <2900000>;
++		regulator-off-in-suspend;
++		regulator-always-on;
++	};
 +
-+    v3v3_hdmi: regulator-v3v3-hdmi {
-+        compatible = "regulator-fixed";
-+        regulator-name = "v3v3_hdmi";
-+        regulator-min-microvolt = <3300000>;
-+        regulator-max-microvolt = <3300000>;
-+        regulator-off-in-suspend;
-+        regulator-always-on;
-+    };
++ 	v2v8: regulator-v2v8 {
++		compatible = "regulator-fixed";
++		regulator-name = "v2v8";
++		regulator-min-microvolt = <2800000>;
++		regulator-max-microvolt = <2800000>;
++		regulator-off-in-suspend;
++		regulator-always-on;
++	};
 +
-+    v1v2_hdmi: regulator-v1v2-hdmi {
-+        compatible = "regulator-fixed";
-+        regulator-name = "v1v2_hdmi";
-+        regulator-min-microvolt = <1200000>;
-+        regulator-max-microvolt = <1200000>;
-+        regulator-off-in-suspend;
-+        regulator-always-on;
-+    };
++	vtt_ddr: regulator-vtt-ddr {
++		compatible = "regulator-fixed";
++		regulator-name = "vtt_ddr";
++		regulator-min-microvolt = <750000>;
++		regulator-max-microvolt = <750000>;
++		regulator-off-in-suspend;
++		regulator-always-on;
++	};
 +
-+    vdd: regulator-vdd {
-+        compatible = "regulator-fixed";
-+        regulator-name = "vdd";
-+        regulator-min-microvolt = <3300000>;
-+        regulator-max-microvolt = <3300000>;
-+        regulator-off-in-suspend;
-+        regulator-always-on;
-+    };
++ 	vdd_usb: regulator-vdd-usb {
++		compatible = "regulator-fixed";
++		regulator-name = "vdd_usb";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		regulator-off-in-suspend;
++		regulator-always-on;
++	};
 +
-+    vdd_usb: regulator-vdd-usb {
-+        compatible = "regulator-fixed";
-+        regulator-name = "vdd_usb";
-+        regulator-min-microvolt = <3300000>;
-+        regulator-max-microvolt = <3300000>;
-+        regulator-off-in-suspend;
-+        regulator-always-on;
-+    };
++	vdd_sd: regulator-sd {
++		compatible = "regulator-fixed";
++		regulator-name = "vdd_sd";
++		regulator-min-microvolt = <2900000>;
++		regulator-max-microvolt = <2900000>;
++		regulator-off-in-suspend;
++		regulator-always-on;
++	};
 +
-+    v2v8: regulator-v2v8 {
-+        compatible = "regulator-fixed";
-+        regulator-name = "v2v8";
-+        regulator-min-microvolt = <2800000>;
-+        regulator-max-microvolt = <2800000>;
-+        regulator-off-in-suspend;
-+        regulator-always-on;
-+    };
++	v1v8: regulator-v1v8 {
++		compatible = "regulator-fixed";
++		regulator-name = "v1v8";
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <1800000>;
++		regulator-off-in-suspend;
++		regulator-always-on;
++	};
++
++	vref_ddr: vref_ddr {
++		compatible = "regulator-fixed";
++		regulator-name = "vref_ddr";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		regulator-off-in-suspend;
++		regulator-always-on;
++	};
++
++	bst_out: boost {
++		compatible = "regulator-fixed";
++		regulator-name = "bst_out";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		regulator-off-in-suspend;
++		regulator-always-on;
++	};
++
++	vbus_otg: pwr_sw1 {
++		compatible = "regulator-fixed";
++		regulator-name = "vbus_otg";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		regulator-off-in-suspend;
++		regulator-always-on;
++	};
++
++	vbus_sw: pwr_sw2 {
++		compatible = "regulator-fixed";
++		regulator-name = "vbus_sw";
++		regulator-active-discharge = <1>;
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		regulator-off-in-suspend;
++		regulator-always-on;
++	};
 +};
 +
 +&bsec {
@@ -388,7 +390,7 @@ index 0000000..0a15485
 +	pinctrl-names = "default";
 +	pinctrl-0 = <&sdmmc1_b4_pins_a &sdmmc1_dir_pins_a>;
 +	st,neg-edge;
-+    broken-cd;
++    	broken-cd;
 +	bus-width = <4>;
 +	vmmc-supply = <&v3v3>;
 +	status = "okay";
@@ -401,7 +403,7 @@ index 0000000..0a15485
 +	st,neg-edge;
 +	bus-width = <8>;
 +	vmmc-supply = <&v3v3>;
-+    vqmmc-supply = <&v3v3>;
++    	vqmmc-supply = <&v3v3>;
 +	status = "okay";
 +};
 +
@@ -435,145 +437,16 @@ index 0000000..0a15485
 +&usbphyc_port1 {
 +	phy-supply = <&vdd_usb>;
 +};
-+
-+/* Low-power states of regulators */
-+&v1v8 {
-+	standby-ddr-sr {
-+		regulator-off-in-suspend;
-+	};
-+	standby-ddr-off {
-+		regulator-off-in-suspend;
-+	};
-+};
-+
-+&v2v8 {
-+	standby-ddr-sr {
-+		regulator-off-in-suspend;
-+	};
-+	standby-ddr-off {
-+		regulator-off-in-suspend;
-+	};
-+};
-+
-+&v3v3 {
-+	standby-ddr-sr {
-+		regulator-off-in-suspend;
-+	};
-+	standby-ddr-off {
-+		regulator-off-in-suspend;
-+	};
-+};
-+
-+&vdd {
-+	lp-stop {
-+		regulator-suspend-microvolt = <3300000>;
-+		regulator-on-in-suspend;
-+	};
-+	lplv-stop {
-+		regulator-suspend-microvolt = <3300000>;
-+		regulator-on-in-suspend;
-+	};
-+	standby-ddr-sr {
-+		regulator-suspend-microvolt = <3300000>;
-+		regulator-on-in-suspend;
-+	};
-+	standby-ddr-off {
-+		regulator-suspend-microvolt = <3300000>;
-+		regulator-on-in-suspend;
-+	};
-+};
-+
-+&vdda {
-+	standby-ddr-sr {
-+		regulator-off-in-suspend;
-+	};
-+	standby-ddr-off {
-+		regulator-off-in-suspend;
-+	};
-+};
-+
-+&vddcore {
-+	lp-stop {
-+		regulator-on-in-suspend;
-+		regulator-suspend-microvolt = <1200000>;
-+	};
-+	lplv-stop {
-+		regulator-on-in-suspend;
-+		regulator-suspend-microvolt = <900000>;
-+	};
-+	standby-ddr-sr {
-+		regulator-off-in-suspend;
-+	};
-+	standby-ddr-off {
-+		regulator-off-in-suspend;
-+	};
-+};
-+
-+&vdd_ddr {
-+	lp-stop {
-+		regulator-suspend-microvolt = <1350000>;
-+		regulator-on-in-suspend;
-+	};
-+	lplv-stop {
-+		regulator-suspend-microvolt = <1350000>;
-+		regulator-on-in-suspend;
-+	};
-+	standby-ddr-sr {
-+		regulator-suspend-microvolt = <1350000>;
-+		regulator-on-in-suspend;
-+	};
-+	standby-ddr-off {
-+		regulator-off-in-suspend;
-+	};
-+};
-+
-+&vdd_sd {
-+	standby-ddr-sr {
-+		regulator-off-in-suspend;
-+	};
-+	standby-ddr-off {
-+		regulator-off-in-suspend;
-+	};
-+};
-+
-+&vdd_usb {
-+	standby-ddr-sr {
-+		regulator-off-in-suspend;
-+	};
-+	standby-ddr-off {
-+		regulator-off-in-suspend;
-+	};
-+};
-+
-+&vref_ddr {
-+	lp-stop {
-+		regulator-on-in-suspend;
-+	};
-+	lplv-stop {
-+		regulator-on-in-suspend;
-+	};
-+	standby-ddr-sr {
-+		regulator-on-in-suspend;
-+	};
-+	standby-ddr-off {
-+		regulator-off-in-suspend;
-+	};
-+};
-+
-+&vtt_ddr {
-+	lp-stop {
-+		regulator-off-in-suspend;
-+	};
-+	lplv-stop {
-+		regulator-off-in-suspend;
-+	};
-+	standby-ddr-sr {
-+		regulator-off-in-suspend;
-+	};
-+	standby-ddr-off {
-+		regulator-off-in-suspend;
-+	};
-+};
--- 
-2.17.1
-
+diff --git a/plat/st/stm32mp1/stm32mp1_def.h b/plat/st/stm32mp1/stm32mp1_def.h
+index 780d124d1..37e59bd38 100644
+--- a/plat/st/stm32mp1/stm32mp1_def.h
++++ b/plat/st/stm32mp1/stm32mp1_def.h
+@@ -659,7 +659,7 @@ static inline uint32_t tamp_bkpr(uint32_t idx)
+ /* Number of low power modes defined in the device tree */
+ #define PLAT_NB_SUSPEND_MODES		7
+ /* 1 FIXED */
+-#define PLAT_NB_FIXED_REGS		U(1)
++#define PLAT_NB_FIXED_REGS		U(14)
+ 
+ /*******************************************************************************
+  * DEBUG

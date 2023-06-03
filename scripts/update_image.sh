@@ -21,6 +21,7 @@ DISTRO_NAME="openstlinux-eglfs"
 MACHINE_NAME="stm32mp15-robot"
 
 IMAGE_PATH="${BUILD_DIR}/tmp-glibc/deploy/images/${MACHINE_NAME}"
+TFA_SERIALBOOT_IMAGE="${IMAGE_PATH}/arm-trusted-firmware/tf-a-stm32mp157d-robot-serialboot.stm32"
 TFA_IMAGE="${IMAGE_PATH}/arm-trusted-firmware/tf-a-stm32mp157d-robot-trusted.stm32"
 UBOOT_IMAGE="${IMAGE_PATH}/u-boot/u-boot-stm32mp157d-robot-trusted.stm32"
 BOOTFS_IMAGE="${IMAGE_PATH}/st-image-bootfs-${DISTRO_NAME}-${MACHINE_NAME}-*.bootfs.ext4"
@@ -36,8 +37,9 @@ fi
 
 [ ! -d "${ROOT_DIR}/${FLUSH_IMAGE_DIR}" ] && mkdir -p "${ROOT_DIR}/${FLUSH_IMAGE_DIR}"
 
-if [ -f "${TFA_IMAGE}" ]; then
+if [ -f "${TFA_IMAGE}" ] && [ -f "${TFA_SERIALBOOT_IMAGE}" ]; then
     cp -r ${TFA_IMAGE} ${ROOT_DIR}/${FLUSH_IMAGE_DIR}/tt_robot_tfa.stm32
+    cp -r ${TFA_SERIALBOOT_IMAGE} ${ROOT_DIR}/${FLUSH_IMAGE_DIR}/tt_robot_tfa_serialboot.stm32
 else
     green "TFA_IMAGE: ${TFA_IMAGE} not exist!"
 fi
