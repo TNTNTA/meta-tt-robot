@@ -28,6 +28,7 @@ SRC_URI = "git://github.com/u-boot/u-boot.git;protocol=https \
            file://0001-NEW-uboot-support-tt-robot-dtb.patch \
            file://0002-TT-modify-uboot-config.patch \
            file://0003-add-uboot-display-debug.patch \
+           file://0004-uboot-support-usb-flush.patch \
            "
 SRCREV  = "050acee119b3757fee3bd128f55d720fdd9bb890"
 
