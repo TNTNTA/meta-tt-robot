@@ -36,9 +36,9 @@ SRC_URI = "https://cdn.kernel.org/pub/linux/kernel/v5.x/${LINUX_TARNAME}.tar.xz;
            file://${LINUX_VERSION}/fragment-03-systemd.config;subdir=fragments \
            file://${LINUX_VERSION}/fragment-04-modules.config;subdir=fragments \
            file://${LINUX_VERSION}/fragment-05-signature.config;subdir=fragments \
+           file://${LINUX_VERSION}/fragment-07-support-network-connect.config;subdir=fragments \
            file://0001-support-tt-robot-kernel-build.patch \
-           file://fragment.cfg \
-           file://0002-kernel-support-lcd-display-abd-boot-logo.patch \
+           file://0001-support-network-connect.patch \
            "
 #SRC_URI = "https://git.kernel.org/torvalds/t/linux-${LINUX_VERSION}-${LINUX_SUBVERSION}.tar.gz;name=kernel"
 
@@ -85,13 +85,14 @@ KERNEL_CONFIG_FRAGMENTS += "${@bb.utils.contains('KERNEL_DEFCONFIG', 'defconfig'
 KERNEL_CONFIG_FRAGMENTS += "${@bb.utils.contains('DISTRO_FEATURES', 'systemd', '${WORKDIR}/fragments/${LINUX_VERSION}/fragment-03-systemd.config', '', d)} "
 KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/${LINUX_VERSION}/fragment-04-modules.config"
 KERNEL_CONFIG_FRAGMENTS += "${@oe.utils.ifelse(d.getVar('KERNEL_SIGN_ENABLE') == '1', '${WORKDIR}/fragments/${LINUX_VERSION}/fragment-05-signature.config','')} "
-KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/${LINUX_VERSION}/fragment-06-support-lcd.config"
+#KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/${LINUX_VERSION}/fragment-06-support-lcd.config"
+KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/${LINUX_VERSION}/fragment-07-support-network-connect.config"
 
 # Don't forget to add/del for devupstream
 SRC_URI_class-devupstream += "file://${LINUX_VERSION}/fragment-03-systemd.config;subdir=fragments"
 SRC_URI_class-devupstream += "file://${LINUX_VERSION}/fragment-04-modules.config;subdir=fragments"
 SRC_URI_class-devupstream += "file://${LINUX_VERSION}/fragment-05-signature.config;subdir=fragments"
-SRC_URI_class-devupstream += "file://${LINUX_VERSION}/fragment-06-support-lcd.config;subdir=fragments"
+#SRC_URI_class-devupstream += "file://${LINUX_VERSION}/fragment-06-support-lcd.config;subdir=fragments"
 
 # -------------------------------------------------------------
 # Kernel Args

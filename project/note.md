@@ -65,24 +65,48 @@ git add .
 git commit -s
 devtool update-recipe u-boot-stm32mp
 ```
-
-
-## 如何调试
-本小节介绍如何修改源码并合并到meta layer中，下面以uboot仓库为例：
-1. 
-2. 修改src/u-boot源码以后编译
+5. 修改启动参数
+常用启动参数设置
 ```
-devtool build u-boot-stm32mp
+setenv bootargs 'console=ttySTM0,115200 root=/dev/mmcblk1p3 rootwait rw'
+setenv bootcmd 'ext4load mmc 1:2 c2000000 uImage;ext4load mmc 1:2 c4000000 stm32mp157d-robot.dtb;bootm c2000000 - c4000000'
+
+setenv bootargs 'console=ttySTM0,115200 root=/dev/nfs nfsroot=192.168.31.171:/home/tangtao/work/nfs/rootfs,proto=tcp rw ip=192.168.31.112:192.168.31.171:192.168.31.1:255.255.255.0::eth0:off'
+setenv bootcmd  'tftp c2000000 uImage;tftp c4000000 stm32mp157d-robot.dtb;bootm c2000000 - c4000000'
+
 ```
+### 1.3 Kernel
+1. 创建调试仓库
+添加kernel仓库到workspace, 在src/linux下面会解压源码并打补丁
+```
+devtool modify -x linux-stm32mp src/linux
+```
+
+2. kernel配置和更改
+```
+bitbake linux-stm32mp -c menuconfig
+bitbake linux-stm32mp -c diffconfig
+```
+
 3. 生成补丁并回写到原meta recipes
 ```
 git add .
 git commit -s
 devtool update-recipe u-boot-stm32mp
 ```
-4. kernel配置和更改
-```
-bitbake linux-stm32mp -c menuconfig
-bitbake linux-stm32mp -c diffconfig
 
+## 如何调试
+1. bitbake查看一个bb文件有哪些任务
+```
+bitbake -c listtasks linux-stm32mp
+```
+
+查找某个变量和路径
+```
+bitbake -e linux-stm32mp | grep KERNEL_MODULES_PACKAGE
+```
+
+开发完毕如不需要可以删除工作区仓库
+```
+devtool reset linux-stm32mp
 ```
