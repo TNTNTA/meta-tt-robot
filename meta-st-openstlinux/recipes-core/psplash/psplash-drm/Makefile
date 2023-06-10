@@ -1,4 +1,5 @@
-SPLASH_IMG ?= ST13028_Linux_picto_11_480x272_8bits.png
+#SPLASH_IMG ?= ST13028_Linux_picto_11_480x272_8bits.png
+SPLASH_IMG ?= tt_robot_Linux_picto_800x480_8bits.png
 SPLASH_IMG_ROT ?= ST13028_Linux_picto_11_480x272_8bits_rotation.png
 
 all: modeset

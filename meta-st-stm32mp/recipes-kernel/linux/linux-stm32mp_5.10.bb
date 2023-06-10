@@ -39,6 +39,7 @@ SRC_URI = "https://cdn.kernel.org/pub/linux/kernel/v5.x/${LINUX_TARNAME}.tar.xz;
            file://${LINUX_VERSION}/fragment-07-support-network-connect.config;subdir=fragments \
            file://0001-support-tt-robot-kernel-build.patch \
            file://0001-support-network-connect.patch \
+           file://0001-support-lcd-disply.patch \
            "
 #SRC_URI = "https://git.kernel.org/torvalds/t/linux-${LINUX_VERSION}-${LINUX_SUBVERSION}.tar.gz;name=kernel"
 

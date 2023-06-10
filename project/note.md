@@ -92,7 +92,7 @@ bitbake linux-stm32mp -c diffconfig
 ```
 git add .
 git commit -s
-devtool update-recipe u-boot-stm32mp
+devtool update-recipe linux-stm32mp
 ```
 
 ## 如何调试

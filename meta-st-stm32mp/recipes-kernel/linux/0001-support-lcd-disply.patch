@@ -1,0 +1,163 @@
+From 0c05b1df572f5700ffc12f0fde3e9a9fc85f9863 Mon Sep 17 00:00:00 2001
+From: Tao Tang <15642339119@163.com>
+Date: Sat, 10 Jun 2023 23:53:08 +0800
+Subject: [PATCH] support lcd disply
+
+Signed-off-by: Tao Tang <15642339119@163.com>
+---
+ arch/arm/boot/dts/stm32mp157d-robot.dtsi | 82 +++++++++++++++++++++++-
+ drivers/gpu/drm/panel/panel-simple.c     | 27 ++++++++
+ 2 files changed, 107 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/boot/dts/stm32mp157d-robot.dtsi b/arch/arm/boot/dts/stm32mp157d-robot.dtsi
+index c488d5998..3c9c03663 100644
+--- a/arch/arm/boot/dts/stm32mp157d-robot.dtsi
++++ b/arch/arm/boot/dts/stm32mp157d-robot.dtsi
+@@ -123,7 +123,7 @@ vdda: ldo1 {
+ 		regulator-boot-on;
+     	};
+ 
+-   	 v1v8_audio: regulator-v1v8-audio {
++   	v1v8_audio: regulator-v1v8-audio {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "v1v8_audio";
+ 		regulator-min-microvolt = <1800000>;
+@@ -148,7 +148,85 @@ vin: regulator-vin {
+ 		regulator-max-microvolt = <5000000>;
+ 		regulator-always-on;
+ 		regulator-boot-on;
+-   	 };
++   	};
++
++	panel_backlight: panel-backlight {
++		compatible = "gpio-backlight";
++		gpios = <&gpioz 0 GPIO_ACTIVE_HIGH>;
++		default-on;
++		default-brightness-level = <2>;
++		status = "okay";
++	};
++
++	panel_rgb: panel-rgb {
++		compatible = "tt-robot,dpi", "panel-dpi";
++		gpios = <&gpiof 4 GPIO_ACTIVE_HIGH>;
++		backlight = <&panel_backlight>;
++		power-supply = <&v3v3>;
++		status = "okay";
++
++		width-mm = <105>;
++		height-mm = <67>;
++
++		port {
++			panel_in_rgb: endpoint {
++				remote-endpoint = <&ltdc_out_rgb>;
++			};
++		};
++
++		panel-timing {
++			clock-frequency = <33300>;
++			hactive = <800>;
++			vactive = <480>;
++			hsync-len = <1>;
++			hfront-porch = <210>;
++			hback-porch = <46>;
++			vsync-len = <1>;
++			vfront-porch = <22>;
++			vback-porch = <23>;
++		};
++
++		panel-timing-4x3 {
++			clock-frequency = <33300>;
++			hactive = <800>;
++			vactive = <480>;
++			hsync-len = <48>;
++			hfront-porch = <40>;
++			hback-porch = <88>;
++			vsync-len = <3>;
++			vfront-porch = <13>;
++			vback-porch = <32>;
++		};
++
++		panel-timing-7 {
++			clock-frequency = <33300>;
++			hactive = <800>;
++			vactive = <480>;
++			hsync-len = <1>;
++			hfront-porch = <210>;
++			hback-porch = <46>;
++			vsync-len = <1>;
++			vfront-porch = <22>;
++			vback-porch = <23>;
++		};
++	};
++};
++
++&ltdc {
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&ltdc_pins_b>;
++	pinctrl-1 = <&ltdc_sleep_pins_b>;
++	status = "okay";
++
++	port {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		ltdc_out_rgb: endpoint@0 {
++			reg = <0>;
++			remote-endpoint = <&panel_in_rgb>;
++		};
++	};
+ };
+ 
+ &cpu0{
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index 204674fcc..5eb47ab85 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -416,6 +416,10 @@ static int panel_dpi_probe(struct device *dev,
+ 	unsigned int bus_flags;
+ 	struct videomode vm;
+ 	int ret;
++	int lcd_switch_gpio;
++	int lcd_type = 0;
++
++	dev_info(dev, "panel_dpi_probe start \n");
+ 
+ 	np = dev->of_node;
+ 	desc = devm_kzalloc(dev, sizeof(*desc), GFP_KERNEL);
+@@ -432,6 +436,28 @@ static int panel_dpi_probe(struct device *dev,
+ 			np);
+ 		return ret;
+ 	}
++	dev_info(dev, "panel_dpi_probe hsync_len :%d\n", timing->hsync_len.typ);
++	dev_info(dev, "panel_dpi_probe hback_porch :%d\n", timing->hback_porch.typ);
++	dev_info(dev, "panel_dpi_probe hfront_porch :%d\n", timing->hfront_porch.typ);
++	dev_info(dev, "panel_dpi_probe vsync_len :%d\n", timing->vsync_len.typ);
++	dev_info(dev, "panel_dpi_probe vback_porch :%d\n", timing->vback_porch.typ);
++	dev_info(dev, "panel_dpi_probe vfront_porch :%d\n", timing->vfront_porch.typ);
++	// lcd_switch_gpio = devm_gpiod_get_optional(np,"gpios", GPIOD_IN);
++	// if (IS_ERR(lcd_switch_gpio)) {
++	// 	dev_warn(dev, "Failed to get GPIO descriptor\n");
++	// } else {
++	// 	// key down -> 4*3; key up -> 7
++	// 	lcd_type = gpiod_get_value(lcd_switch_gpio);
++	// 	dev_info(dev, "lcd_type: %s\n", lcd_type ? "800*480-7" : "800*480-4x3");
++	// 	if (!lcd_type) {
++	// 		ret = of_get_display_timing(np, "panel-timing-4x3", timing);
++	// 		if (ret < 0) {
++	// 			dev_err(dev, "%pOF: no panel-timing node found for \
++	// 				\"panel-dpi\" binding\n", np);
++	// 			return ret;
++	// 		}
++	// 	}
++	// }
+ 
+ 	desc->timings = timing;
+ 	desc->num_timings = 1;
+@@ -449,6 +475,7 @@ static int panel_dpi_probe(struct device *dev,
+ 	desc->connector_type = DRM_MODE_CONNECTOR_DPI;
+ 
+ 	panel->desc = desc;
++	dev_info(dev, "panel_dpi_probe end \n");
+ 
+ 	return 0;
+ }
