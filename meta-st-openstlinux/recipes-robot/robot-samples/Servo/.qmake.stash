@@ -1,0 +1,23 @@
+QMAKE_CXX.QT_COMPILER_STDCXX = 201402L
+QMAKE_CXX.QMAKE_GCC_MAJOR_VERSION = 9
+QMAKE_CXX.QMAKE_GCC_MINOR_VERSION = 2
+QMAKE_CXX.QMAKE_GCC_PATCH_VERSION = 1
+QMAKE_CXX.COMPILER_MACROS = \
+    QT_COMPILER_STDCXX \
+    QMAKE_GCC_MAJOR_VERSION \
+    QMAKE_GCC_MINOR_VERSION \
+    QMAKE_GCC_PATCH_VERSION
+QMAKE_CXX.INCDIRS = \
+    /usr/local/arm/gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf/arm-none-linux-gnueabihf/include/c++/9.2.1 \
+    /usr/local/arm/gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf/arm-none-linux-gnueabihf/include/c++/9.2.1/arm-none-linux-gnueabihf \
+    /usr/local/arm/gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf/arm-none-linux-gnueabihf/include/c++/9.2.1/backward \
+    /usr/local/arm/gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf/lib/gcc/arm-none-linux-gnueabihf/9.2.1/include \
+    /usr/local/arm/gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf/lib/gcc/arm-none-linux-gnueabihf/9.2.1/include-fixed \
+    /usr/local/arm/gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf/arm-none-linux-gnueabihf/include \
+    /home/tangtao/work/pangu/buildroot-2020.02.6/output/host/arm-buildroot-linux-gnueabihf/sysroot/usr/include
+QMAKE_CXX.LIBDIRS = \
+    /usr/local/arm/gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf/lib/gcc/arm-none-linux-gnueabihf/9.2.1 \
+    /usr/local/arm/gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf/lib/gcc \
+    /usr/local/arm/gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf/arm-none-linux-gnueabihf/lib \
+    /home/tangtao/work/pangu/buildroot-2020.02.6/output/host/arm-buildroot-linux-gnueabihf/sysroot/lib \
+    /home/tangtao/work/pangu/buildroot-2020.02.6/output/host/arm-buildroot-linux-gnueabihf/sysroot/usr/lib

@@ -10,6 +10,9 @@ export QT_QPA_EGLFS_ALWAYS_SET_MODE=1
 #force to use KMS ATOMIC
 export QT_QPA_EGLFS_KMS_ATOMIC=1
 
+# force the usage of evdevtouch on systems
+export QT_QPA_EGLFS_NO_LIBINPUT=1
+
 # EGLFS environment variables accessible for qt 5.12
 # Documentation: https://doc.qt.io/qt-5/embedded-linux.html
 ##

@@ -9,4 +9,5 @@ DefaultDependencies=no
 ExecStart=/usr/bin/psplash-drm -w
 
 [Install]
-WantedBy=local-fs.target
+WantedBy=disable
+#WantedBy=local-fs.target

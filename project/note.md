@@ -110,3 +110,8 @@ bitbake -e linux-stm32mp | grep KERNEL_MODULES_PACKAGE
 ```
 devtool reset linux-stm32mp
 ```
+
+查找yocto中是否安装某个包
+```
+bitbake -s | grep <package_name>   //eg: bitbake -s | grep freetype
+```
