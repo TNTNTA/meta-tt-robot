@@ -21,14 +21,13 @@ SRC_URI = " \
     "
 
 S = "${WORKDIR}"
-FONT_NAME = "misans-fonts"
 
 do_install_append() {
-    install -d ${D}${datadir}/fonts/TTF/
-    install -m 0644 ${S}/MiSans-*.ttf ${D}${datadir}/fonts/TTF/
+    install -d ${D}${datadir}/fonts/ttf/
+    install -m 0644 ${S}/MiSans-*.ttf ${D}${datadir}/fonts/ttf/
 }
 
-PACKAGES = "${FONT_NAME}"
-FONT_PACKAGES = "${FONT_NAME}"
+PACKAGES = "${PN}"
+FONT_PACKAGES = "${PN}"
 
-FILES_${FONT_NAME} = "${datadir}/fonts"
+FILES_${PN} = "${datadir}/fonts"
