@@ -1,0 +1,109 @@
+From abbecc654cc4e929beed891f0be19b64e8a0afd1 Mon Sep 17 00:00:00 2001
+From: Tao Tang <15642339119@163.com>
+Date: Thu, 15 Jun 2023 22:48:38 +0800
+Subject: [PATCH] support 4.3 size lcd
+
+Signed-off-by: Tao Tang <15642339119@163.com>
+---
+ arch/arm/boot/dts/stm32mp157d-robot.dtsi |  4 ++-
+ drivers/gpu/drm/panel/panel-simple.c     | 34 ++++++++++++++++++++----
+ 2 files changed, 32 insertions(+), 6 deletions(-)
+
+diff --git a/arch/arm/boot/dts/stm32mp157d-robot.dtsi b/arch/arm/boot/dts/stm32mp157d-robot.dtsi
+index 3c9c03663..7bf87c3c8 100644
+--- a/arch/arm/boot/dts/stm32mp157d-robot.dtsi
++++ b/arch/arm/boot/dts/stm32mp157d-robot.dtsi
+@@ -159,7 +159,9 @@ panel_backlight: panel-backlight {
+ 	};
+ 
+ 	panel_rgb: panel-rgb {
+-		compatible = "tt-robot,dpi", "panel-dpi";
++		compatible = "tt-robot";
++		//compatible = "panel-dpi";
++
+ 		gpios = <&gpiof 4 GPIO_ACTIVE_HIGH>;
+ 		backlight = <&panel_backlight>;
+ 		power-supply = <&v3v3>;
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index 5eb47ab85..457eafc73 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -654,7 +654,6 @@ static int panel_simple_probe(struct device *dev, const struct panel_desc *desc)
+ 	drm_panel_add(&panel->base);
+ 
+ 	dev_set_drvdata(dev, panel);
+-
+ 	return 0;
+ 
+ free_ddc:
+@@ -3901,6 +3900,32 @@ static const struct panel_desc winstar_wf35ltiacd = {
+ 	.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
+ };
+ 
++static const struct drm_display_mode tt_robot_display_mode = {
++       .clock = 33300,
++       .hdisplay = 800,
++       .hsync_start = 800 + 88,
++       .hsync_end = 800 + 88 + 48,
++       .htotal = 800 + 88 + 48 + 40,
++       .vdisplay = 480,
++       .vsync_start = 480 + 32,
++       .vsync_end = 480 + 32 + 3,
++       .vtotal = 480 + 32 + 3 + 13,
++       .flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC,
++
++};
++
++static const struct panel_desc tt_robot = {
++	.modes = &tt_robot_display_mode,
++	.num_modes = 1,
++	.bpc = 8,
++	.size = {
++		.width = 70,
++		.height = 53,
++	},
++	.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
++	.connector_type = DRM_MODE_CONNECTOR_DPI,
++};
++
+ static const struct drm_display_mode arm_rtsm_mode[] = {
+ 	{
+ 		.clock = 65000,
+@@ -4327,6 +4352,9 @@ static const struct of_device_id platform_of_match[] = {
+ 	}, {
+ 		.compatible = "winstar,wf35ltiacd",
+ 		.data = &winstar_wf35ltiacd,
++	}, {
++		.compatible = "tt-robot",
++		.data = &tt_robot,
+ 	}, {
+ 		/* Must be the last entry */
+ 		.compatible = "panel-dpi",
+@@ -4340,11 +4368,9 @@ MODULE_DEVICE_TABLE(of, platform_of_match);
+ static int panel_simple_platform_probe(struct platform_device *pdev)
+ {
+ 	const struct of_device_id *id;
+-
+ 	id = of_match_node(platform_of_match, pdev->dev.of_node);
+ 	if (!id)
+ 		return -ENODEV;
+-
+ 	return panel_simple_probe(&pdev->dev, id->data);
+ }
+ 
+@@ -4665,7 +4691,6 @@ static struct mipi_dsi_driver panel_simple_dsi_driver = {
+ static int __init panel_simple_init(void)
+ {
+ 	int err;
+-
+ 	err = platform_driver_register(&panel_simple_platform_driver);
+ 	if (err < 0)
+ 		return err;
+@@ -4675,7 +4700,6 @@ static int __init panel_simple_init(void)
+ 		if (err < 0)
+ 			return err;
+ 	}
+-
+ 	return 0;
+ }
+ module_init(panel_simple_init);

@@ -1,2 +1,2 @@
-RDEPENDS_packagegroup-framework-sample-qt += " ttf-misans "
+RDEPENDS_packagegroup-framework-sample-qt += " ttf-misans servo "
 

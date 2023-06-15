@@ -115,3 +115,8 @@ devtool reset linux-stm32mp
 ```
 bitbake -s | grep <package_name>   //eg: bitbake -s | grep freetype
 ```
+
+
+## 系统集成笔记
+1. yocto集成misans
+2. yocto集成adb和fastboot

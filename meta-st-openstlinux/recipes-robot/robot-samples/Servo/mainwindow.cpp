@@ -86,7 +86,7 @@ void MainWindow::DrawDigital(QPainter& painter,int radius)
     painter.setPen(QColor(218,112,214));
     QFont font;
     //font.setFamily("Cambria");
-    font.setPointSize(8);
+    font.setPointSize(6);
     painter.setFont(font);
     for(int i=0;i<10;++i){
         QPointF point(0,0);
@@ -180,7 +180,7 @@ void MainWindow::DrawText(QPainter& painter,int radius, const QString& name, con
     painter.setPen(QColor(255,255,255));
     QFont font;
     //font.setFamily("Cambria");
-    font.setPointSize(8);
+    font.setPointSize(6);
     painter.setFont(font);
     painter.drawText(-25, -radius+13, 50, 20,Qt::AlignCenter, deg);
     painter.drawText(-25, -radius-10, 50, 20,Qt::AlignCenter, name);
