@@ -41,6 +41,7 @@ SRC_URI = "https://cdn.kernel.org/pub/linux/kernel/v5.x/${LINUX_TARNAME}.tar.xz;
            file://0001-support-network-connect.patch \
            file://0001-support-lcd-disply.patch \
            file://0002-support-4.3-size-lcd.patch \
+           file://0003-bringup-fusb302-and-support-UFP-DFP-recongenize.patch \
            "
 #SRC_URI = "https://git.kernel.org/torvalds/t/linux-${LINUX_VERSION}-${LINUX_SUBVERSION}.tar.gz;name=kernel"
 
