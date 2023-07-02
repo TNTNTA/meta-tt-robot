@@ -36,7 +36,6 @@ RDEPENDS_packagegroup-framework-tools-base-core = "\
     lrzsz           \
     libgpiod        \
     libgpiod-tools  \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'usbgadget', 'usbotg-gadget-config', '', d)} \
     "
 
 SUMMARY_packagegroup-framework-tools-base-kernel = "Framework tools base components for kernel"
