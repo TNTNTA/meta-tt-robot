@@ -1,0 +1,13 @@
+[Unit]
+Description=Enable ADB feature
+After=systemd-remount-fs.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=-/sbin/adb_usb_gadget_config.sh
+ExecStop=/sbin/adb_usb_gadget_config.sh stop
+
+
+[Install]
+WantedBy=multi-user.target
