@@ -38,11 +38,13 @@ SRC_URI = "https://cdn.kernel.org/pub/linux/kernel/v5.x/${LINUX_TARNAME}.tar.xz;
            file://${LINUX_VERSION}/fragment-05-signature.config;subdir=fragments \
            file://${LINUX_VERSION}/fragment-07-support-network-connect.config;subdir=fragments \
            file://${LINUX_VERSION}/fragment-08-support-fusb302-typec-switch.config;subdir=fragments \
+           file://${LINUX_VERSION}/fragment-09-support-ov5640-camera.config;subdir=fragments \
            file://0001-support-tt-robot-kernel-build.patch \
            file://0001-support-network-connect.patch \
            file://0001-support-lcd-disply.patch \
            file://0002-support-4.3-size-lcd.patch \
            file://0003-bringup-fusb302-and-support-UFP-DFP-recongenize.patch \
+           file://0001-suppot-ov5640-camera.patch \
            "
 #SRC_URI = "https://git.kernel.org/torvalds/t/linux-${LINUX_VERSION}-${LINUX_SUBVERSION}.tar.gz;name=kernel"
 
@@ -91,6 +93,7 @@ KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/${LINUX_VERSION}/fragment-04-mo
 KERNEL_CONFIG_FRAGMENTS += "${@oe.utils.ifelse(d.getVar('KERNEL_SIGN_ENABLE') == '1', '${WORKDIR}/fragments/${LINUX_VERSION}/fragment-05-signature.config','')} "
 KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/${LINUX_VERSION}/fragment-07-support-network-connect.config"
 KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/${LINUX_VERSION}/fragment-08-support-fusb302-typec-switch.config"
+KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/${LINUX_VERSION}/fragment-09-support-ov5640-camera.config"
 
 # Don't forget to add/del for devupstream
 SRC_URI_class-devupstream += "file://${LINUX_VERSION}/fragment-03-systemd.config;subdir=fragments"
@@ -98,6 +101,7 @@ SRC_URI_class-devupstream += "file://${LINUX_VERSION}/fragment-04-modules.config
 SRC_URI_class-devupstream += "file://${LINUX_VERSION}/fragment-05-signature.config;subdir=fragments"
 SRC_URI_class-devupstream += "file://${LINUX_VERSION}/fragment-07-support-network-connect.config;subdir=fragments"
 SRC_URI_class-devupstream += "file://${LINUX_VERSION}/fragment-08-support-fusb302-typec-switch.config;subdir=fragments"
+SRC_URI_class-devupstream += "file://${LINUX_VERSION}/fragment-09-support-ov5640-camera.config;subdir=fragments"
 
 # -------------------------------------------------------------
 # Kernel Args
