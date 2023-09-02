@@ -1,0 +1,30 @@
+From 65a4dc842f83b9e56ff1dac5e4931e367e8cc148 Mon Sep 17 00:00:00 2001
+From: Tao Tang <15642339119@163.com>
+Date: Sun, 23 Jul 2023 23:41:55 +0800
+Subject: [PATCH] fix usb host port cannot recognize device issue
+
+Signed-off-by: Tao Tang <15642339119@163.com>
+---
+ arch/arm/boot/dts/stm32mp157d-robot.dtsi | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/boot/dts/stm32mp157d-robot.dtsi b/arch/arm/boot/dts/stm32mp157d-robot.dtsi
+index 6b748e183..90e14e06c 100644
+--- a/arch/arm/boot/dts/stm32mp157d-robot.dtsi
++++ b/arch/arm/boot/dts/stm32mp157d-robot.dtsi
+@@ -462,7 +462,14 @@ &usbphyc_port1 {
+ };
+ 
+ &usbh_ehci {
+-	phys = <&usbphyc_port0>;
++	phys = <&usbphyc_port0>;           /* Use USBPHYC HS PHY port #1, mapped on USBH controller */
++	phy-names = "usb";
++	status = "okay";
++};
++
++&usbh_ohci {
++	phys = <&usbphyc_port0>;           /* Use USBPHYC HS PHY port #1, mapped on USBH controller */
++	phy-names = "usb";
+ 	status = "okay";
+ };
+ 
