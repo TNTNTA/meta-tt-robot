@@ -67,3 +67,12 @@ BBLAYERS += " \
     ${FRAMEWORKLAYERS} \
     ${@'${OPENEMBEDDED}' if os.path.isfile('${OEROOT}/layers/openembedded-core/meta/conf/layer.conf') else '${POKY}'} \
     "
+
+# ROS
+ADDONSLAYERS += " \
+	${OEROOT}/layers/meta-ros/meta-ros-backports-hardknott \
+	${OEROOT}/layers/meta-ros/meta-ros-backports-gatesgarth \
+	${OEROOT}/layers/meta-ros/meta-ros-common \
+	${OEROOT}/layers/meta-ros/meta-ros1 \
+	${OEROOT}/layers/meta-ros/meta-ros1-noetic \
+	"
