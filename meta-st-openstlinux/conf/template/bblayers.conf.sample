@@ -73,6 +73,6 @@ ADDONSLAYERS += " \
 	${OEROOT}/layers/meta-ros/meta-ros-backports-hardknott \
 	${OEROOT}/layers/meta-ros/meta-ros-backports-gatesgarth \
 	${OEROOT}/layers/meta-ros/meta-ros-common \
-	${OEROOT}/layers/meta-ros/meta-ros1 \
-	${OEROOT}/layers/meta-ros/meta-ros1-noetic \
+	${OEROOT}/layers/meta-ros/meta-ros2 \
+	${OEROOT}/layers/meta-ros/meta-ros2-galactic \
 	"
