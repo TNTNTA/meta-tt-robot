@@ -116,6 +116,25 @@ devtool reset linux-stm32mp
 bitbake -s | grep <package_name>   //eg: bitbake -s | grep freetype
 ```
 
+/etc/wpa_supplicant.conf wifi配置文件：
+```
+ctrl_interface=/var/run/wpa_supplicant
+ctrl_interface_group=0
+update_config=1
+
+network={
+        key_mgmt=WPA-PSK
+	ssid="TNT"
+	psk="1314weini"
+}
+```
+配置wlan0网卡
+```
+wpa_supplicant -B -c /etc/wpa_supplicant.conf  -i wlan0
+udhcpc -i wlan0
+wpa_cli -i wlan0 status 
+```
+
 
 ## 系统集成笔记
 1. yocto集成misans
