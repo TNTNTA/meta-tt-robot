@@ -28,18 +28,15 @@ bsdmainutils \
 libssl-dev libgmp-dev libmpc-dev libyaml-dev
 ```
 
-3. 下载ST 官方openSTLinux layer源码
+3. 下载完整TTRobot Yocto layer源码
 ```
-// STM32MP15-Ecosystem-v3.1.0 release
-repo init -u https://github.com/STMicroelectronics/oe-manifest.git -b refs/tags/openstlinux-5.10-dunfell-mp1-21-11-17
+repo init -u https://github.com/TNTNTA/robot-manifest.git
 repo sync
-
 ```
-4. 下载本仓库，添加到layers中
+同步代码以后如下所示：
 ```
-git clone https://github.com/TNTNTA/meta-tt-robot.git
 ➜  layers ls
-meta-openembedded  meta-qt5  meta-st  meta-tt-robot  openembedded-core
+meta-openembedded  meta-qt5  meta-ros  meta-tt-robot  openembedded-core
 ```
 
 ## 编译打包说明
