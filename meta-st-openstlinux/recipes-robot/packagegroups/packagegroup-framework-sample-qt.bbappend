@@ -1,4 +1,5 @@
 RDEPENDS_packagegroup-framework-sample-qt += " \
+        ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'systemd-robot-init', '', d)} \
         ttf-misans \
         servo \
         android-tools \

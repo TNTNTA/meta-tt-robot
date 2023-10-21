@@ -130,10 +130,13 @@ network={
 ```
 配置wlan0网卡
 ```
+ifconfig wlan0 up
 wpa_supplicant -B -c /etc/wpa_supplicant.conf  -i wlan0
 udhcpc -i wlan0
 wpa_cli -i wlan0 status 
 ```
+
+
 
 
 ## 系统集成笔记
