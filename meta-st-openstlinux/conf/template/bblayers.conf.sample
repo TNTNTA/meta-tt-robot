@@ -49,6 +49,7 @@ ADDONSLAYERS += "${@'${OEROOT}/layers/meta-openembedded/meta-networking' if os.p
 # Qt5
 ADDONSLAYERS += "${@'${OEROOT}/layers/meta-qt5' if os.path.isfile('${OEROOT}/layers/meta-qt5/conf/layer.conf') else ''}"
 
+
 # Security layer
 ADDONSLAYERS += " \
     ${@'${OEROOT}/layers/meta-security \
@@ -61,12 +62,19 @@ FRAMEWORKLAYERS += "${@'${OEROOT}/layers/meta-tt-robot/meta-st-openstlinux' if o
 
 # add BSP layer
 BBLAYERS += " \
-    ${BASELAYERS} \
-    ${BSPLAYER} \
-    ${ADDONSLAYERS} \
-    ${FRAMEWORKLAYERS} \
-    ${@'${OPENEMBEDDED}' if os.path.isfile('${OEROOT}/layers/openembedded-core/meta/conf/layer.conf') else '${POKY}'} \
-    "
+  ${BASELAYERS} \
+  ${BSPLAYER} \
+  ${ADDONSLAYERS} \
+  ${FRAMEWORKLAYERS} \
+  ${@'${OPENEMBEDDED}' \
+  if \
+  os.path.isfile('${OEROOT}/layers/openembedded-core/meta/conf/layer.conf') \
+  else \
+  '${POKY}'} \
+  "
+# BSP dependencies"
+BBLAYERS =+ "${OEROOT}/layers/meta-openembedded/meta-oe"
+BBLAYERS =+ "${OEROOT}/layers/meta-openembedded/meta-python"
 
 # ROS
 ADDONSLAYERS += " \
@@ -76,3 +84,5 @@ ADDONSLAYERS += " \
 	${OEROOT}/layers/meta-ros/meta-ros2 \
 	${OEROOT}/layers/meta-ros/meta-ros2-galactic \
 	"
+
+
