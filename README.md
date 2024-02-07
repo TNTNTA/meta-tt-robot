@@ -60,6 +60,14 @@ bitbake tt-robot-image-qt -c populate_sdk
 
 ## 烧录
 
+## App开发
+```
+source /opt/st/fsmp1a/3.1-snapshot/environment-setup-cortexa7t2hf-neon-vfpv4-ostl-linux-gnueabi
+
+// 编译eg:
+arm-ostl-linux-gnueabi-gcc -mthumb -mfpu=neon-vfpv4 -mfloat-abi=hard -mcpu=cortex-a7 --sysroot=/opt/st/fsmp1a/3.1-snapshot/sysroots/cortexa7t2hf-neon-vfpv4-ostl-linux-gnueabi -lsqlite3 user_register.c -o register
+```
+
 ## Q&A
 1. Fetcher failure for URL: 'https://www.example.com/'. URL https://www.example.com/ doesn't work.
 - 请设置代理，保证能连接外网
